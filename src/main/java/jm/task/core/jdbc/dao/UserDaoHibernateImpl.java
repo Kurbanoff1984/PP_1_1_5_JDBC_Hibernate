@@ -1,7 +1,7 @@
 package jm.task.core.jdbc.dao;
 
-import com.mysql.cj.util.Util;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
