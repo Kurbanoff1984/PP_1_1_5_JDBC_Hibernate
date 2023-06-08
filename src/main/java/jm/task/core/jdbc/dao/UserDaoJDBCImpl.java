@@ -10,7 +10,7 @@ import java.util.List;
 public class UserDaoJDBCImpl implements UserDao {
     private final Connection connection = Util.getConnection();
 
-    public UserDaoJDBCImpl() {
+    public UserDaoJDBCImpl() throws SQLException {
 
     }
 
@@ -78,7 +78,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        String cleanTable = "TRUNCATE users";
+        String cleanTable = "TRUNCATE TABLE users";
         try (PreparedStatement preparedStatement = connection.prepareStatement(cleanTable)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
