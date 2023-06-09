@@ -15,15 +15,13 @@ import java.util.Properties;
 
 public class Util {
 
-
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
     }
-
-    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "root";
+    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_DIALECT = "org.hibernate.dialect.MySQL8Dialect";
 
 
@@ -35,7 +33,6 @@ public class Util {
         properties.put(Environment.PASS, DB_PASSWORD);
         properties.put(Environment.DIALECT, DB_DIALECT);
         properties.put(Environment.SHOW_SQL, "true");
-        properties.put(Environment.HBM2DDL_AUTO, "update");
         return new Configuration().setProperties(properties).addAnnotatedClass(User.class).buildSessionFactory();
     }
 }

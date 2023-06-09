@@ -1,16 +1,13 @@
 package jm.task.core.jdbc.dao;
-
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.jpa.HibernateQuery;
-
-import javax.transaction.SystemException;
-import javax.transaction.Transaction;
+import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class UserDaoHibernateImpl implements UserDao {
     private final SessionFactory sessionFactory = Util.getSessionFactory();
@@ -19,11 +16,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-
     @Override
     public void createUsersTable() {
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = (Transaction) session.beginTransaction();
+            Transaction transaction =  session.beginTransaction();
             try {
                 String createTable = """
                         CREATE TABLE IF NOT EXISTS users
@@ -36,11 +32,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 session.createSQLQuery(createTable).executeUpdate();
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("Таблица отсутствует" + e.getMessage());
-                try {
+                System.out.println("Таблица отсутствует :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -55,11 +49,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 session.createSQLQuery(query).executeUpdate();
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("Таблица не удалена" + e.getMessage());
-                try {
+                System.out.println("Таблица не удалена :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -74,14 +66,13 @@ public class UserDaoHibernateImpl implements UserDao {
                 user.setName(name);
                 user.setLastName(lastName);
                 user.setAge(age);
+                System.out.println("Пользователь дабавлен :" + user);
                 session.save(user);
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("Пользователь не добавлен" + e.getMessage());
-                try {
+                System.out.println("Пользователь не добавлен :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -96,11 +87,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 session.delete(user);
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("Пользователь не удален" + e.getMessage());
-                try {
+                System.out.println("Пользователь не удален :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -117,11 +106,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 list = session.createQuery(getAll, User.class).getResultList();
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("User не получен" + e.getMessage());
-                try {
+                System.out.println("User не получен :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -136,11 +123,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 session.createSQLQuery("TRUNCATE TABLE users").executeUpdate();
                 transaction.commit();
             } catch (Exception e) {
-                System.out.println("Таблица не очищена" + e.getMessage());
-                try {
+                System.out.println("Таблица не очищена :" + e.getMessage());
+                if (transaction != null) {
                     transaction.rollback();
-                } catch (SystemException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         }
