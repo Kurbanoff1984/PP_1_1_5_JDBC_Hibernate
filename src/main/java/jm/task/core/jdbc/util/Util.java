@@ -1,13 +1,8 @@
 package jm.task.core.jdbc.util;
-
 import jm.task.core.jdbc.model.User;
-import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistry;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,6 +13,7 @@ public class Util {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
     }
+
     private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "root";

@@ -1,8 +1,6 @@
 package jm.task.core.jdbc.dao;
-
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +11,19 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() throws SQLException {
 
     }
-
-
     @Override
     public void createUsersTable() {
-        String creatTable = "CREATE TABLE IF NOT EXISTS users (id BIGINT NOT NULL AUTO_INCREMENT,name VARCHAR(45) NOT NULL, lastName VARCHAR(45) NOT NULL,age TINYINT NOT NULL, PRIMARY KEY (id))";
+        String creatTable = "CREATE TABLE IF NOT EXISTS users (" +
+                            "id BIGINT NOT NULL AUTO_INCREMENT," +
+                            "name VARCHAR(45) NOT NULL," +
+                            " lastName VARCHAR(45) NOT NULL," +
+                            "age TINYINT NOT NULL, PRIMARY KEY (id))";
         try (PreparedStatement preparedStatement = connection.prepareStatement(creatTable)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
     public void dropUsersTable() {
         String dropUsersTable = "DROP TABLE IF EXISTS users";
         try (Statement statement = connection.createStatement()) {
@@ -33,7 +32,6 @@ public class UserDaoJDBCImpl implements UserDao {
             throw new RuntimeException(e);
         }
     }
-
     public void saveUser(String name, String lastName, byte age) {
         String saveUser = "INSERT INTO users (NAME,LASTNAME, AGE) VALUES (?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(saveUser)) {
@@ -45,7 +43,6 @@ public class UserDaoJDBCImpl implements UserDao {
             throw new RuntimeException(e);
         }
     }
-
     public void removeUserById(long id) {
         String removeUser = "DELETE FROM users WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(removeUser)) {
@@ -55,7 +52,6 @@ public class UserDaoJDBCImpl implements UserDao {
             throw new RuntimeException(e);
         }
     }
-
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         String string = "SELECT ID, NAME, LASTNAME, AGE FROM users";
@@ -76,7 +72,6 @@ public class UserDaoJDBCImpl implements UserDao {
         }
         return list;
     }
-
     public void cleanUsersTable() {
         String cleanTable = "TRUNCATE TABLE users";
         try (PreparedStatement preparedStatement = connection.prepareStatement(cleanTable)) {
